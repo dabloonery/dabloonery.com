@@ -212,7 +212,7 @@ body { font-size: var(--text-sm); line-height: 1.5; background: var(--sunken); }
 .feature--split .feature-text { flex: 1; padding-bottom: var(--space-3); }
 .peek {
   flex: none; width: 210px; height: 190px; overflow: hidden; align-self: flex-end;
-  border: 1px solid #2c3850; border-bottom: 0; border-right: 0; border-radius: var(--radius-sm) 0 0 0; background: #1c2433;
+  border-radius: var(--radius-sm) 0 0 0; background: #222936; /* the panel's own background, so the crop has no seam */
 }
 .peek img { width: 100%; height: auto; display: block; transition: transform .25s var(--ease, ease); }
 .peek:hover img { transform: translateY(-24px); }
@@ -246,7 +246,7 @@ body { font-size: var(--text-sm); line-height: 1.5; background: var(--sunken); }
 @media (max-width: 560px) {
   .box-row { grid-template-columns: 1fr; }
   .feature--split { padding-right: var(--space-3); }
-  .peek { width: 100%; height: 150px; border-right: 1px solid #2c3850; border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+  .peek { width: 100%; height: 150px; border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
   .peek img { width: 220px; margin: 0 auto; }
   .banner-stats div { flex: 1 0 40%; }
   .banner-stats div:nth-child(3) { border-left: 0; }
@@ -262,3 +262,10 @@ body { font-size: var(--text-sm); line-height: 1.5; background: var(--sunken); }
 .tk-wordmark .wm-i { position: relative; display: inline-block; }
 .tk-wordmark .wm-i::after { content: ""; position: absolute; left: 50%; top: .075em; width: .19em; height: .19em; margin-left: -.095em; border-radius: 50%; background: #ff8f3a; }
 a.tk-wordmark:hover { text-decoration: none; opacity: .85; }
+
+/* Buttons: every button is the same raised key with a 2px edge that presses down, so Tirekick's
+   button isn't the only raised thing. Tirekick's keeps its own colors and pill shape. */
+.db-btn { box-shadow: inset 0 1px 0 var(--edge-hi), 0 2px 0 var(--line); }
+.db-btn:active { transform: translateY(2px); box-shadow: inset 0 1px 2px rgb(0 0 0 / .25); }
+.db-btn--icon { box-shadow: none; }
+.db-btn--icon:active { transform: none; box-shadow: none; }
