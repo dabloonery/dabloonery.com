@@ -201,9 +201,6 @@ body { font-size: var(--text-sm); line-height: 1.5; background: var(--sunken); }
 }
 
 /* ---- v4: more color on the page, the fun in plain sight ---- */
-/* A faint diagonal hatch behind the shell, like the tiled backgrounds of old portals. Matte, low contrast. */
-body { background-image: repeating-linear-gradient(135deg, transparent 0 6px, var(--rule) 6px 7px); background-attachment: fixed; }
-:root[data-theme="light"] body { background-image: repeating-linear-gradient(135deg, transparent 0 6px, rgb(0 0 0 / .05) 6px 7px); }
 
 /* Tirekick's boxes wear Tirekick's colors (navy title bar, orange marker), in both themes. */
 .box--tk .box-title { background: #1c2433; color: #f4f6fa; border-bottom-color: #2c3850; }
@@ -257,3 +254,11 @@ body { background-image: repeating-linear-gradient(135deg, transparent 0 6px, va
   .profile .db-mark { display: none; }
   .profile-facts div { grid-template-columns: 1fr; gap: 0; }
 }
+
+/* Tirekick's wordmark, as Tirekick draws it (lib/theme.js): lowercase Bricolage Grotesque at 800 and 85% width,
+   the i's dotted with orange tread dots. The font file is cut down to just these letters (5 KB). */
+@font-face { font-family: "TK Display"; src: url("fonts/tirekick-wordmark.woff2") format("woff2"); font-weight: 700 800; font-stretch: 85%; font-display: swap; }
+.tk-wordmark { font: 800 1.75rem/1 "TK Display", "Arial Narrow", system-ui, sans-serif; font-stretch: 85%; letter-spacing: -.035em; color: var(--ink); text-decoration: none; white-space: nowrap; }
+.tk-wordmark .wm-i { position: relative; display: inline-block; }
+.tk-wordmark .wm-i::after { content: ""; position: absolute; left: 50%; top: .075em; width: .19em; height: .19em; margin-left: -.095em; border-radius: 50%; background: #ff8f3a; }
+a.tk-wordmark:hover { text-decoration: none; opacity: .85; }
