@@ -1,0 +1,216 @@
+/* ==========================================================================
+   dabloonery — base components
+   Uses only the role tokens from tokens.css, so it works with any brand's tokens.
+   Copy as is. Change looks in the tokens file, not here.
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* Hardware details come from tokens: --edge-hi (1px top highlight), --edge-lo (crisp bottom
+   edge), --recess (sunk-in), --lift (dialogs), --scrim (behind dialogs). No gloss, blur or glow. */
+
+html { -webkit-text-size-adjust: 100%; }
+
+/* Classes that set display must not beat the hidden attribute. */
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* One focus ring for everything. Shows for keyboard use only. */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.db-sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---- Text ------------------------------------------------------------------ */
+h1, h2, h3 { margin: 0; line-height: 1.25; font-weight: 600; }
+.db-h1 { font-size: var(--text-xl); }
+.db-h2 { font-size: var(--text-lg); }
+.db-soft { color: var(--ink-soft); }
+.db-meta:empty { display: none; }
+/* Small mono caps label, used for section names and instrument-style readouts. */
+.db-label { font: 500 var(--text-xs) var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; }
+.db-meta { color: var(--muted); font-family: var(--font-mono); font-size: var(--text-xs); }
+a { color: inherit; text-underline-offset: 2px; }
+kbd, code {
+  font-family: var(--font-mono); font-size: var(--text-xs);
+  background: var(--sunken); border: 1px solid var(--rule);
+  border-radius: var(--radius-sm); padding: 1px 5px;
+}
+
+/* ---- Panel ------------------------------------------------------------------- */
+.db-panel {
+  background: var(--raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 1px 0 var(--edge-hi);
+}
+
+/* ---- Buttons ----------------------------------------------------------------- */
+.db-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 32px; padding: 6px 13px;
+  background: var(--raised); color: var(--ink);
+  border: 1px solid var(--line); border-radius: var(--radius-sm);
+  font: 500 var(--text-sm)/1 var(--font-sans);
+  box-shadow: inset 0 1px 0 var(--edge-hi), 0 1px 0 var(--edge-lo);
+  cursor: pointer;
+  transition: background var(--ease), border-color var(--ease), transform 50ms ease;
+}
+.db-btn:hover { background: var(--raised-hover); }
+.db-btn:active { transform: translateY(1px); box-shadow: var(--recess); }
+.db-btn[aria-busy="true"] { cursor: progress; opacity: 0.7; }
+.db-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.db-btn svg { width: 16px; height: 16px; flex: none; }
+
+/* The main action is a lighter keycap that sits a little higher than the rest. */
+.db-btn--primary {
+  background: var(--accent); color: var(--on-accent); border-color: var(--edge-lo); font-weight: 600;
+  box-shadow: inset 0 1px 0 var(--edge-hi), 0 2px 0 var(--edge-lo);
+}
+.db-btn--primary:active { transform: translateY(2px); box-shadow: var(--recess); }
+.db-btn--primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+.db-btn--danger { color: var(--danger); border-color: var(--danger); background: transparent; box-shadow: none; }
+.db-btn--danger:hover { background: var(--raised-hover); }
+
+/* Icon-only button: always give it an aria-label. 32px keeps it above the 24px target size. */
+.db-btn--icon { width: 32px; padding: 0; border-color: transparent; background: transparent; color: var(--ink-soft); box-shadow: none; }
+.db-btn--icon:hover { color: var(--ink); background: var(--raised-hover); }
+
+/* ---- Inputs ------------------------------------------------------------------ */
+.db-field { display: grid; gap: var(--space-1); }
+.db-field > span { color: var(--ink-soft); font-size: var(--text-xs); font-weight: 500; }
+
+.db-input, .db-select {
+  width: 100%; min-height: 32px; padding: 6px 10px;
+  background: var(--sunken); color: var(--ink);
+  border: 1px solid var(--line); border-radius: var(--radius-sm);
+  font: var(--text-sm) var(--font-sans);
+  box-shadow: var(--recess);
+}
+.db-input::placeholder { color: var(--muted); }
+.db-input[aria-invalid="true"] { border-color: var(--danger); }
+.db-error { margin: 0; color: var(--danger); font-size: var(--text-xs); }
+.db-input:focus-visible, .db-select:focus-visible { outline-offset: 0; }
+
+.db-check { display: flex; align-items: center; gap: var(--space-2); min-height: 24px; cursor: pointer; }
+.db-check input { width: 16px; height: 16px; margin: 0; accent-color: var(--accent); }
+
+/* Segmented choice (e.g. Dark / Light / Match system), built on radio buttons. */
+.db-segmented { display: inline-flex; justify-self: start; border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; }
+.db-segmented label { position: relative; }
+.db-segmented input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.db-segmented span { display: block; padding: 5px 12px; min-height: 30px; color: var(--ink-soft); }
+.db-segmented label + label span { border-left: 1px solid var(--rule); }
+.db-segmented input:checked + span { background: var(--accent); color: var(--on-accent); font-weight: 600; }
+.db-segmented input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: -4px; }
+
+/* ---- Status light: always next to a word (never color alone) ---------------- */
+.db-status {
+  display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px;
+  color: var(--ink-soft); font: var(--text-xs) var(--font-mono);
+  background: var(--sunken); border: 1px solid var(--rule); border-radius: var(--radius-sm);
+  box-shadow: var(--recess);
+}
+.db-led {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%; flex: none;
+  background: var(--idle);
+  box-shadow: inset 0 1px 0 var(--edge-hi), 0 0 0 1px var(--edge-lo);
+}
+.db-led--ok { background: var(--ok); }
+.db-led--warn { background: var(--warn); }
+.db-led--error { background: var(--danger); }
+.db-led--signature { background: var(--signature); }
+
+/* ---- Top bar: mark and name top-left, utility actions and Settings top-right -- */
+.db-topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--rule);
+  background: var(--raised);
+  box-shadow: inset 0 1px 0 var(--edge-hi), 0 1px 0 var(--edge-lo);
+}
+.db-brand { display: flex; align-items: center; gap: var(--space-2); }
+.db-brand h1 { font-size: var(--text-sm); font-weight: 600; }
+.db-actions { display: flex; align-items: center; gap: var(--space-1); }
+
+/* ---- The dabloonery mark (the SVG symbol in index.html holds its colors) ---- */
+.db-mark { display: block; flex: none; }
+
+/* ---- Empty state: a recessed well with a plain sentence. No clip-art. ---- */
+.db-empty {
+  display: grid; gap: var(--space-1);
+  padding: var(--space-6) var(--space-4);
+  background: var(--sunken); border: 1px solid var(--rule); border-radius: var(--radius-md);
+  box-shadow: var(--recess); color: var(--ink-soft);
+}
+.db-empty .db-label { color: var(--muted); }
+.db-empty strong { color: var(--ink); font-weight: 600; }
+
+/* ---- Short intro: an inline card, not a pop-up. Dismissed once, for good. ---- */
+.db-intro { padding: var(--space-4); display: grid; gap: var(--space-3); }
+.db-intro ol { margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: var(--space-1); color: var(--ink-soft); }
+.db-intro li { counter-increment: step; display: flex; gap: var(--space-3); }
+.db-intro li::before { content: counter(step, decimal-leading-zero); color: var(--muted); font: var(--text-xs)/1.9 var(--font-mono); }
+.db-intro footer { display: flex; gap: var(--space-2); }
+
+/* ---- Dialogs: native <dialog> for focus trapping and Escape ----------------- */
+.db-dialog {
+  width: min(440px, calc(100vw - 32px)); max-height: calc(100vh - 32px);
+  padding: 0; color: var(--ink);
+  background: var(--raised); border: 1px solid var(--line); border-radius: var(--radius-md);
+  box-shadow: var(--lift);
+}
+.db-dialog::backdrop { background: var(--scrim); } /* no blur: core section 9 */
+.db-dialog .db-dialog-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--rule);
+}
+.db-dialog .db-dialog-head h2 { font-size: var(--text-base); }
+.db-dialog .db-body { padding: var(--space-4); display: grid; gap: var(--space-4); }
+.db-dialog section { display: grid; gap: var(--space-2); }
+.db-dialog section + section { padding-top: var(--space-4); border-top: 1px solid var(--rule); }
+.db-dialog h3 { font-size: var(--text-xs); color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-mono); font-weight: 500; }
+
+/* About dialog specifics */
+.db-about { text-align: center; justify-items: center; }
+.db-about p { margin: 0; }
+.db-credit {
+  display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; min-height: 24px;
+  color: var(--ink-soft); text-decoration: none; border-radius: var(--radius-sm);
+}
+.db-credit:hover { color: var(--ink); background: var(--raised-hover); }
+.db-egg { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--muted); }
+
+/* ---- Lists --------------------------------------------------------------------- */
+.db-list { list-style: none; margin: 0; padding: 0; }
+.db-list li {
+  min-height: 40px;
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+  padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--rule);
+}
+.db-list li:last-child { border-bottom: 0; }
+.db-list a { display: block; padding-block: 4px; min-width: 0; }
